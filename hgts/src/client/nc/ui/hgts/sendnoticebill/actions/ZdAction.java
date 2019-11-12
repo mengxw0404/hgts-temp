@@ -158,12 +158,12 @@ public class ZdAction extends NCAction {
 				newbvos[0].setAttributeValue("opentime", null);
 				newbvos[0].setAttributeValue("pk_sendnoticebill_b", null);
 				newbvos[0].setAttributeValue("dr", 0);
-				newbvos[0].setAttributeValue("yzxnum", null);
+//				newbvos[0].setAttributeValue("yzxnum", null);
 				newbvos[0].setAttributeValue("def19", null);    // 折吨人+折吨时间；取消折吨人+时间
-				newbvos[0].setAttributeValue("def6", null); 	// 装车计划已装车数
-				newbvos[0].setAttributeValue("yjsnum", null); 	// 已结算数量
-				newbvos[0].setAttributeValue("ykpnum", null); 	// 已开票数量
-				newbvos[0].setAttributeValue("mny", null); 		// 已开票金额
+//				newbvos[0].setAttributeValue("def6", null); 	// 装车计划已装车数
+//				newbvos[0].setAttributeValue("yjsnum", null); 	// 已结算数量
+//				newbvos[0].setAttributeValue("ykpnum", null); 	// 已开票数量
+//				newbvos[0].setAttributeValue("mny", null); 		// 已开票金额
 
 				newbvos[0].setAttributeValue("def1", null); 	// 记录结转到目的单据的单据号
 				newbvos[0].setAttributeValue("def2", null);		// 记录  当前结转的 子表主键

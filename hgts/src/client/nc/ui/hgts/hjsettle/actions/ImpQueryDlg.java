@@ -7,12 +7,20 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import nc.bs.framework.common.InvocationInfoProxy;
 import nc.ui.bd.ref.MineVORefModel;
 import nc.ui.hgts.hjsettle_yfee.actions.QueryConditonDlg;
 import nc.ui.pub.beans.MessageDialog;
+import nc.ui.pub.beans.RefEditEvent;
+import nc.ui.pub.beans.RefEditListener;
 import nc.ui.pub.beans.UIButton;
 import nc.ui.pub.beans.UIDialog;
 import nc.ui.pub.beans.UIRefPane;
+import nc.ui.pub.beans.ValueChangedEvent;
+import nc.ui.pub.beans.ValueChangedListener;
+import nc.ui.pub.beans.calendar.CalendarValueChangeEvent;
+import nc.ui.pub.beans.calendar.ICalendarValueChangeListener;
+import nc.ui.uif2.model.AbstractAppModel;
 import nc.vo.pub.lang.UFDate;
 import nc.vo.pub.lang.UFDateTime;
 import nc.vo.pubapp.AppContext;
@@ -30,6 +38,9 @@ public class ImpQueryDlg extends UIDialog {
 	public UIRefPane begdateRef;
 	public UIRefPane enddateRef;
 
+	private JLabel lborg = null;// 客户
+	private UIRefPane orgText = null;
+	
 	private JLabel lbywy = null;// 客户
 	private UIRefPane ywyText = null;
 
@@ -41,7 +52,8 @@ public class ImpQueryDlg extends UIDialog {
 
 	private JLabel lbmz=null; //煤种
 	private UIRefPane mzText = null;	
-
+	
+	private AbstractAppModel model;
 	public String[]  querycondition= new String[3];
 	public StringBuffer b_qrycondition=new StringBuffer();
 	public boolean isImp;    
@@ -74,15 +86,17 @@ public class ImpQueryDlg extends UIDialog {
 
 
 	@SuppressWarnings("deprecation")
-	public ImpQueryDlg() {
+	public ImpQueryDlg(AbstractAppModel model) {
 		super();
+		this.model = model;
 		initialize();
 	}
 
 	@SuppressWarnings("deprecation")
-	public ImpQueryDlg(HashMap bufferCondition){
+	public ImpQueryDlg(HashMap bufferCondition,AbstractAppModel model){
 		super();
 		this.setBufferCondition(bufferCondition);
+		this.model = model;
 		initialize();
 	}
 
@@ -96,23 +110,28 @@ public class ImpQueryDlg extends UIDialog {
 	public JPanel getJPanel() {
 		if (jPanel == null) {
 
+			lborg = new JLabel();
+			lborg.setBounds(new Rectangle(85, 30, 100, 22));
+			lborg.setText("组织：");
+			lborg.setVisible(true);		
+			
 			lbywy = new JLabel();
-			lbywy.setBounds(new Rectangle(85, 30, 100, 22));
+			lbywy.setBounds(new Rectangle(85, 65, 100, 22));
 			lbywy.setText("客户：");
 			lbywy.setVisible(true);			
 
 			lbjsfs = new JLabel();
-			lbjsfs.setBounds(new Rectangle(85, 65, 100, 22));
+			lbjsfs.setBounds(new Rectangle(85, 100, 100, 22));
 			lbjsfs.setText("矿别：");
 			lbjsfs.setVisible(true);
 			
 			lbtype = new JLabel();
-			lbtype.setBounds(new Rectangle(85, 100, 100, 22));
+			lbtype.setBounds(new Rectangle(85, 135, 100, 22));
 			lbtype.setText("结算方式：");
 			lbtype.setVisible(true);
 
 			lbmz = new JLabel();
-			lbmz.setBounds(new Rectangle(85, 135, 100, 22));
+			lbmz.setBounds(new Rectangle(85, 170, 100, 22));
 			lbmz.setText("煤种：");
 			lbmz.setVisible(true);
 
@@ -124,6 +143,9 @@ public class ImpQueryDlg extends UIDialog {
 			jPanel = new JPanel();
 			jPanel.setLayout(null);
 
+			jPanel.add(lborg,null);
+			jPanel.add(getOrgText(),null);
+			
 			jPanel.add(lbywy,null);
 			jPanel.add(getYwyText(),null);
 
@@ -153,6 +175,45 @@ public class ImpQueryDlg extends UIDialog {
 	}
 
 	/**
+	 * 组织
+	 * @return
+	 */
+	private UIRefPane getOrgText(){
+		if(orgText == null){
+			orgText = new UIRefPane();
+			orgText.setName("组织");
+			orgText.setRefNodeName("业务单元");
+			orgText.setPK(bufferCondition.get("pk_org"));
+			orgText.setBounds(150, 30, 150, 22);
+			orgText.setVisible(true);
+			//编辑事件监听
+//			orgText.addRefEditListener(new RefEditListener() {
+//				@Override
+//				public boolean beforeEdit(RefEditEvent refeditevent) {
+//					// TODO 自动生成的方法存根
+//					if(getOrgText().getRefPK()!=null){
+//						ywyText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
+//						mzText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
+//					}
+//					return true;
+//				}
+//			});
+			//编辑后事件监听
+			orgText.addValueChangedListener(new ValueChangedListener() {	
+				@Override
+				public void valueChanged(ValueChangedEvent valuechangedevent) {
+					// 在选择组织之后，将客户和物料的所属公司更新为所选择的组织
+					if(getOrgText().getRefPK()!=null){
+						ywyText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
+						mzText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
+					}
+				}
+			});
+		}
+		return orgText;
+	}   
+	
+	/**
 	 * 业务员
 	 * @return
 	 */
@@ -162,17 +223,8 @@ public class ImpQueryDlg extends UIDialog {
 			ywyText.setName("客户");
 			ywyText.setRefNodeName("客户档案");
 			ywyText.setPK(bufferCondition.get("pk_cust"));
-			ywyText.setBounds(150, 30, 150, 22);
+			ywyText.setBounds(150, 65, 150, 22);
 			ywyText.setVisible(true);
-			/*ywyText.addRefEditListener(new RefEditListener() {				
-				@Override
-				public boolean beforeEdit(RefEditEvent arg0) {
-					PsndocDefaultRefModel psnref = (PsndocDefaultRefModel) ywyText.getRefModel();
-					String pk_org=QueryDlgUtils.getDefaultOrgUnit();
-					psnref.setPk_org(pk_org);
-					return true;
-				}
-			});*/
 		}
 		return ywyText;
 	}   
@@ -182,7 +234,7 @@ public class ImpQueryDlg extends UIDialog {
 			jsfsText = new UIRefPane();
 			jsfsText.setName("矿别");
 			jsfsText.setRefModel(new MineVORefModel());
-			jsfsText.setBounds(150, 65, 150, 22);
+			jsfsText.setBounds(150, 100, 150, 22);
 			jsfsText.setVisible(true);   
 			jsfsText.setPK(bufferCondition.get("pk_kc"));
 		}
@@ -195,7 +247,7 @@ public class ImpQueryDlg extends UIDialog {
 			typeText.setName("结算方式");
 			typeText.setRefNodeName("付款方式(自定义档案)");
 			typeText.setPK(bufferCondition.get("pk_balatype"));
-			typeText.setBounds(150, 100, 150, 22);
+			typeText.setBounds(150, 135, 150, 22);
 			typeText.setVisible(true);
 		}
 		return typeText;
@@ -206,7 +258,7 @@ public class ImpQueryDlg extends UIDialog {
 			mzText = new UIRefPane();
 			mzText.setName("煤种");
 			mzText.setRefNodeName("物料（多版本）");
-			mzText.setBounds(150, 135, 150, 22);
+			mzText.setBounds(150, 170, 150, 22);
 			mzText.setVisible(true);   
 			mzText.setPK(bufferCondition.get("pk_inv"));
 		}
@@ -217,7 +269,7 @@ public class ImpQueryDlg extends UIDialog {
 		if (begdateLab == null) {
 			begdateLab = new JLabel();
 			begdateLab.setText("开始日期：");
-			begdateLab.setBounds(60, 170, 100, 20);
+			begdateLab.setBounds(60, 205, 100, 20);
 		}
 		return begdateLab;
 	}
@@ -226,7 +278,7 @@ public class ImpQueryDlg extends UIDialog {
 		if (begdateRef == null) {
 			begdateRef = new UIRefPane();
 			begdateRef.setName("begdateRef");
-			begdateRef.setBounds(150, 170, 150, 22);
+			begdateRef.setBounds(150, 205, 150, 22);
 			begdateRef.setRefNodeName("日历");
 			Object datefrom=bufferCondition.get("datefrom");
 			if(null==datefrom){
@@ -244,7 +296,7 @@ public class ImpQueryDlg extends UIDialog {
 		if (enddateLab == null) {
 			enddateLab = new JLabel();
 			enddateLab.setText("结束日期：");
-			enddateLab.setBounds(60, 205, 100, 20);
+			enddateLab.setBounds(60, 240, 100, 20);
 		}
 		return enddateLab;
 	}
@@ -252,7 +304,7 @@ public class ImpQueryDlg extends UIDialog {
 		if (enddateRef == null) {
 			enddateRef = new UIRefPane();
 			enddateRef.setName("enddateRef");
-			enddateRef.setBounds(150, 205, 150, 22);
+			enddateRef.setBounds(150, 240, 150, 22);
 			enddateRef.setRefNodeName("日历");
 			Object dateto=bufferCondition.get("dateto");
 			if(null==dateto){
@@ -280,6 +332,11 @@ public class ImpQueryDlg extends UIDialog {
 			getDateToRef().getRefName().toString();
 	}
 
+	public String getOrg(){
+		
+		return getOrgText().getRefPK()==null?"":getOrgText().getRefPK().toString();
+	}
+
 	public String getYwy(){
 		return getYwyText().getRefPK()==null?"":getYwyText().getRefPK().toString();
 	}
@@ -297,6 +354,16 @@ public class ImpQueryDlg extends UIDialog {
 	}
 	@SuppressWarnings("unchecked")
 	private void onBtnOk() {
+
+		//querycondition.append(" 1=1 ");
+		if(getOrg() != null && getOrg().length()!=0){
+			querycondition[0]=" and pk_org='"+getOrg()+"'";
+			querycondition[2]=" and pk_org='"+getOrg()+"'"; // 判断该户是否需要进行质检使用
+			bufferCondition.put("pk_org", getOrg());
+		}else{
+			MessageDialog.showWarningDlg(null, "提示", "请选择组织");
+			return;
+		}
 
 		//querycondition.append(" 1=1 ");
 		if(getYwy() != null && getYwy().length()!=0){
@@ -336,10 +403,6 @@ public class ImpQueryDlg extends UIDialog {
 			if(getDateFrom() != null && getDateFrom().length()!=0){
 				String bdate=new UFDate(getDateFrom()).getYear()+"-"+new UFDate(getDateFrom()).getMonth();
 				String edate=new UFDate(getDateTo()).getYear()+"-"+new UFDate(getDateTo()).getMonth();
-//				if(!bdate.equals(edate)){
-//					MessageDialog.showWarningDlg(null, "提示", "日期期间不允许跨年跨月");
-//					return; 
-//				}
 				
 				// 获取当前登录日期
 				UFDate cdate=new UFDate(AppContext.getInstance().getBusiDate().toString().substring(0, 10));
@@ -355,7 +418,7 @@ public class ImpQueryDlg extends UIDialog {
 			MessageDialog.showWarningDlg(null, "提示", "请选择日期");
 			return;
 		}
-		
+
 		if(getMz() !=null && getMz().length() !=0){
 			querycondition[1]=" and pz='"+getMz()+"'";
 			bufferCondition.put("pk_inv", getMz());
@@ -364,14 +427,14 @@ public class ImpQueryDlg extends UIDialog {
 			MessageDialog.showWarningDlg(null, "提示", "请选择煤种");
 			return;
 		}
-		
+
 		this.closeOK();
 	}
 
 	private UIButton getBtnOk() {
 		if (btnOk == null) {
 			btnOk = new UIButton();
-			btnOk.setBounds(new Rectangle(100, 240, 68, 22));
+			btnOk.setBounds(new Rectangle(100, 270, 68, 22));
 			btnOk.setText("确定");
 			btnOk.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -385,7 +448,7 @@ public class ImpQueryDlg extends UIDialog {
 	private UIButton getBtnCancle() {
 		if (btnCancle == null) {
 			btnCancle = new UIButton();
-			btnCancle.setBounds(new Rectangle(220, 240, 68, 22));
+			btnCancle.setBounds(new Rectangle(220, 270, 68, 22));
 			btnCancle.setText("取消");
 			btnCancle.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {

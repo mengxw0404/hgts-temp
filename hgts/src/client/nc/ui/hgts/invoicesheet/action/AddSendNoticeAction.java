@@ -40,8 +40,9 @@ public class AddSendNoticeAction extends AddRefAction {
 	@Override
 	public void fieldsControll() {
 		Object sendnoticebillno=getEditor().getBillCardPanel().getHeadItem("sendnoticebillno").getValueObject();
+		Object pk_sendnoticebill=getEditor().getBillCardPanel().getHeadItem("pk_fytzd").getValueObject();
 		try {
-			SendnoticebillHVO[] hvos=(SendnoticebillHVO[]) HYPubBO_Client.queryByCondition(SendnoticebillHVO.class, " nvl(dr,0)=0 and vbillno='"+sendnoticebillno+"'");
+			SendnoticebillHVO[] hvos=(SendnoticebillHVO[]) HYPubBO_Client.queryByCondition(SendnoticebillHVO.class, " nvl(dr,0)=0 and vbillno='"+sendnoticebillno+"' and pk_sendnoticebill='"+pk_sendnoticebill+"'");
 			if(null !=hvos && hvos.length>0){
 				
 				getEditor().getBillCardPanel().getHeadItem("dbilldate").setValue(AppContext.getInstance().getServerTime());
@@ -76,7 +77,7 @@ public class AddSendNoticeAction extends AddRefAction {
 				
 				String hpk=hvos[0].getPrimaryKey();
 				
-				SendnoticebillBVO[] bvos=(SendnoticebillBVO[]) HYPubBO_Client.queryByCondition(SendnoticebillBVO.class, " nvl(dr,0)=0 and nvl(rowcloseflag,'N')='N' and pk_sendnoticebill='"+hpk+"'");
+				SendnoticebillBVO[] bvos=(SendnoticebillBVO[]) HYPubBO_Client.queryByCondition(SendnoticebillBVO.class, " nvl(dr,0)=0 and nvl(rowcloseflag,'N')='N' and nvl(blatest ,'N')='Y' and pk_sendnoticebill='"+hpk+"'");
 				if(null !=bvos && bvos.length>0){
 					InvoicesheetBVO bvo=new InvoicesheetBVO();
 					UFDouble syl=HgtsPubTool.getUFDoubleNullAsZero(bvos[0].getAttributeValue("shul")).sub(HgtsPubTool.getUFDoubleNullAsZero(bvos[0].getAttributeValue("yzxnum")));

@@ -123,24 +123,24 @@ public class ConOfPriceAction  extends NCAction {
 					
 				}
 				UFDouble ches=UFDouble.ZERO_DBL;// 车数
-				//判断当前单据校验方式  1==金额校验
-				if(hvo.getAttributeValue("checktype").equals("1")){
-					if(newprice.doubleValue() !=0){
-						
+				
+				UFDouble shul = HgtsPubTool.getUFDoubleNullAsZero(newbvos[0].getAttributeValue("shul"));
+				if(aggvo.getParentVO().getAttributeValue("pk_busitype").equals(HgtsPubConst.biztype_sx) && shul.compareTo(new UFDouble(60)) > 0 ){
+					//数量校验 （总量保持不变） 金额 = 数量 * 新单价
+					num = HgtsPubTool.getUFDoubleNullAsZero(newbvos[0].getAttributeValue("shul"));
+					jstotal=num.multiply(newprice);
+				}else{
+					//金额校验 : 数量 =  金额 / 新单价
+					if(newprice.doubleValue() !=0)			
 						num=jstotal.div(newprice);
-					}
 					if(carstrong.doubleValue() !=0){
 						// 取模
 						UFDouble carnum=num.div(carstrong);
 						String[]str=carnum.toString().split("[.]");
 						ches=HgtsPubTool.getUFDoubleNullAsZero(str[0]);
 					}
-				}else{
-					//数量校验 （总量保持不变）
-					num = HgtsPubTool.getUFDoubleNullAsZero(newbvos[0].getAttributeValue("shul"));
-					jstotal=num.multiply(newprice);
 				}
-				//
+//	
 				UFDouble rowno =HgtsPubTool.getUFDoubleNullAsZero(blavo[0].getAttributeValue("rowno"));
 				newbvos[0].setAttributeValue("rowno", (rowno.add(10).intValue()));
 				newbvos[0].setAttributeValue("shul", num);
@@ -156,12 +156,12 @@ public class ConOfPriceAction  extends NCAction {
 				newbvos[0].setAttributeValue("opentime", null);
 				newbvos[0].setAttributeValue("pk_sendnoticebill_b", null);
 				newbvos[0].setAttributeValue("dr", 0);
-				newbvos[0].setAttributeValue("yzxnum", null);
+//				newbvos[0].setAttributeValue("yzxnum", null);
 				newbvos[0].setAttributeValue("def19", null);    // 折吨人+折吨时间；取消折吨人+时间
-				newbvos[0].setAttributeValue("def6", null); 	// 装车计划已装车数
-				newbvos[0].setAttributeValue("yjsnum", null); 	// 已结算数量
-				newbvos[0].setAttributeValue("ykpnum", null); 	// 已开票数量
-				newbvos[0].setAttributeValue("mny", null); 		// 已开票金额
+//				newbvos[0].setAttributeValue("def6", null); 	// 装车计划已装车数
+//				newbvos[0].setAttributeValue("yjsnum", null); 	// 已结算数量
+//				newbvos[0].setAttributeValue("ykpnum", null); 	// 已开票数量
+//				newbvos[0].setAttributeValue("mny", null); 		// 已开票金额
 
 				newbvos[0].setAttributeValue("def1", null); 	// 记录结转到目的单据的单据号
 				newbvos[0].setAttributeValue("def2", null);		// 记录  当前结转的 子表主键

@@ -89,7 +89,7 @@ public class QryBDAction extends nc.ui.pubapp.uif2app.actions.AddAction {
 	}
 
 	protected ImpQueryDlg getConditionDlg() {
-		ImpQueryDlg rtnValue = new ImpQueryDlg(this.getBufferCondition());
+		ImpQueryDlg rtnValue = new ImpQueryDlg(this.getBufferCondition(),this.model);
 		return rtnValue;
 	}
 

@@ -2,13 +2,7 @@ package nc.ui.hgts.sendcarlist.actions;
 
 import java.awt.event.ActionEvent;
 
-import nc.bs.framework.common.NCLocator;
-import nc.itf.uap.busibean.ISysInitQry;
 import nc.ui.hgts.ff.pub.AddRefAction;
-import nc.vo.pub.BusinessException;
-import nc.vo.pub.para.SysInitVO;
-import nc.vo.pubapp.AppContext;
-
 
 /**
  * 参照日计划发运单

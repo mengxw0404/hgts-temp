@@ -145,16 +145,17 @@ public class PriceColImpl implements IPriceCol {
 					sub(qyyh_tzprice.abs()).sub(ysfs_tzprice.abs())
 					.add(HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("zcfee")));			 		
 			//判断当前单据校验方式  
-			//1==金额校验 : 数量 =  金额 / 新单价
-			if(head.getAttributeValue("checktype").equals("1")){
-				UFDouble shul = HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("jstotal")).div(zx_price);
-				item.setAttributeValue("shul", shul);
-				item.setAttributeValue("jstotal", HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("jstotal")));
-			}else{
+			UFDouble shul = HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("shul"));
+			if(head.getAttributeValue("pk_busitype").equals(HgtsPubConst.biztype_sx) && shul.compareTo(new UFDouble(60)) > 0 ){
 				//数量校验 （总量保持不变） 金额 = 数量 * 新单价
 				UFDouble jstotal = HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("shul")).multiply(zx_price);
 				item.setAttributeValue("shul", HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("shul")));
 				item.setAttributeValue("jstotal", jstotal);
+			}else{
+				//金额校验 : 数量 =  金额 / 新单价
+				UFDouble shul2 = HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("jstotal")).div(zx_price);
+				item.setAttributeValue("shul", shul2);
+				item.setAttributeValue("jstotal", HgtsPubTool.getUFDoubleNullAsZero(item.getAttributeValue("jstotal")));
 			}
 			item.setAttributeValue("zxprice", zx_price);
 
