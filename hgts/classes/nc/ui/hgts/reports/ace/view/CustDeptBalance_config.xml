@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="gbk"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 环境变量 -->
+	<bean id="context" class="nc.vo.uif2.LoginContext">
+	</bean>
+	
+	<!-- 操作应用模型 ，缓存界面数据 -->
+	<bean id="bmModel" class="nc.ui.uif2.model.BatchBillTableModel">
+		<property name="context" ref="context" />
+	</bean>
+	
+	<bean id="modelDataManager" class="nc.ui.hgts.reports.model.CustDeptBalanceDataManager">
+		<property name="model" ref="bmModel" />
+	</bean>
+	
+	<!-- 模板容器，负责对模板的统一装载 -->
+	<bean id="templateContainer" class="nc.ui.uif2.editor.TemplateContainer"
+		init-method="load">
+		<property name="context" ref="context" />
+		<property name="nodeKeies">
+        	<list>
+        		<value>bt</value>
+        	</list>
+        </property>
+	</bean>
+	
+	<bean id="orgPanel" class="nc.ui.pubapp.uif2app.view.OrgPanel"
+		init-method="initUI">
+		<property name="model" ref="bmModel" />
+		<property name="dataManager" ref="modelDataManager" />
+	</bean>
+	
+	<!-- 列表控件 -->
+	<bean id="list" class="nc.ui.hgts.reports.ace.view.CostcalTable_15"
+		init-method="initUI">
+		<property name="model" ref="bmModel" />
+	</bean>
+	  
+	<bean id="exceptionHandler" class="nc.ui.uif2.DefaultExceptionHanler">
+		<constructor-arg><ref bean="container"/></constructor-arg>
+		<property name="context"><ref bean="context" /></property>
+	</bean>
+	
+	<!-- 界面布局总装-->
+	<bean id="container" class="nc.ui.uif2.TangramContainer"
+		init-method="initUI">
+		<property name="tangramLayoutRoot">
+			<bean class="nc.ui.uif2.tangramlayout.node.VSNode">
+				<property name="down">
+					<bean class="nc.ui.uif2.tangramlayout.node.CNode">
+						<property name="component" ref="list" />
+					</bean>
+				</property>
+	
+				<property name="up">
+					<bean class="nc.ui.uif2.tangramlayout.node.CNode">
+						<property name="component" ref="orgPanel" />
+					</bean>
+				</property>
+				<property name="dividerLocation" value="31" />
+			</bean>
+		</property>
+	
+		<property name="actions">
+			        <list>
+			        	<ref bean="separatorAction" />
+			        	<ref bean="queryaction" />
+			       <!-- 	<ref bean="batchRefreshAction" />  --> 
+			         	<ref bean="printAction" />
+			        </list>
+		    </property>
+		<property name="model" ref="bmModel" />
+	</bean>
+	
+	<!-- Actions -->
+	<bean id="separatorAction" class="nc.funcnode.ui.action.SeparatorAction" />
+	
+	<!-- 查询-->
+	<bean id="queryaction" class="nc.ui.hgts.reports.action.CustDeptBalanceAction">
+		<property name="list" ref="list" />
+	</bean>
+	<!--======= 动作：[newActions] [刷新] ===========-->
+	<!--  <bean id="batchRefreshAction" class="nc.ui.pubapp.uif2app.actions.batch.BatchRefreshAction">
+		<property name="model"><ref bean="bmModel"/></property>
+		<property name="modelManager"><ref bean="modelDataManager"/></property>
+		<property name="exceptionHandler"><ref bean="exceptionHandler" /></property>
+	</bean>  -->
+
+	<!--======= 动作：[newActions] [打印] ===========-->
+	<bean id="printAction" class="nc.ui.hgts.reports.action.PrintAction">
+		<property name="model"><ref bean="bmModel"/></property>
+		<property name="costT"><ref bean="list"/></property>
+	</bean>
+
+	<!--  <bean id="printAction" class="nc.ui.pubapp.uif2app.actions.MetaDataBasedPrintAction">
+		<property name="preview" value="false" />
+		<property name="model" ref="bmModel" />
+	</bean> -->
+	
+</beans>

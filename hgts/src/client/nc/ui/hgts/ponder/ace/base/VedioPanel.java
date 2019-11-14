@@ -3,8 +3,10 @@ package nc.ui.hgts.ponder.ace.base;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
 import nc.ui.pub.beans.UIPanel;
 
 public class VedioPanel

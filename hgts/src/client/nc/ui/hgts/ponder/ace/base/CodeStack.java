@@ -17,7 +17,7 @@ public class CodeStack implements Observer
   private int bytrate = 19200;
   private int databits = 8; // 数据位
   private int stopbits = 1;// 截止位
-  private int parity = 1; // 校验位:0 无校验；1：奇校验；2：偶
+  private int parity = 0; // 校验位:0 无校验；1：奇校验；2：偶
   private int waitms = 2000;
   private int databufferlength = 16;
   private MeasPanel parents = null;

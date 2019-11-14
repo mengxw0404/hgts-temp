@@ -283,82 +283,6 @@ public class MeasPanel   extends UIPanel  implements Observer{
 		return this.ledPanel;
 	}
 
-	/* public QueuePanel getQueuePanel()
-  {
-    if (this.queuePanel == null) {
-      this.queuePanel = new QueuePanel();
-    }
-    return this.queuePanel;
-  }*/
-
-	/* public void setHardDriverStatus(int radio, int vedio, int ir, int com, int trans, int hander, int tare, int gross)
-  {
-    if (radio == 0) {
-      getStatusDesginPanel().getRadioFreFiled().setForeground(Color.GREEN);
-    } else if (radio == 1) {
-      getStatusDesginPanel().getRadioFreFiled().setForeground(Color.RED);
-    } else if (radio == 2) {
-      getStatusDesginPanel().getRadioFreFiled().setForeground(Color.YELLOW);
-    }
-    if (vedio == 0) {
-      getStatusDesginPanel().getVideoFiled().setForeground(Color.GREEN);
-    } else if (vedio == 1) {
-      getStatusDesginPanel().getVideoFiled().setForeground(Color.RED);
-    } else if (vedio == 2) {
-      getStatusDesginPanel().getVideoFiled().setForeground(Color.YELLOW);
-    }
-    if (ir == 0) {
-      getStatusDesginPanel().getInfraredFiled().setForeground(Color.GREEN);
-    } else if (ir == 1) {
-      getStatusDesginPanel().getInfraredFiled().setForeground(Color.RED);
-    } else if (ir == 2) {
-      getStatusDesginPanel().getInfraredFiled().setForeground(Color.YELLOW);
-    }
-    if (com == 0) {
-      getStatusDesginPanel().getSerialPortFiled().setForeground(
-        Color.GREEN);
-    } else if (com == 1) {
-      getStatusDesginPanel().getSerialPortFiled().setForeground(Color.RED);
-    } else if (com == 2) {
-      getStatusDesginPanel().getSerialPortFiled().setForeground(
-        Color.YELLOW);
-    }
-    if (trans == 0) {
-      getStatusDesginPanel().getTransferField().setForeground(Color.GREEN);
-    } else if (trans == 1) {
-      getStatusDesginPanel().getTransferField().setForeground(Color.RED);
-    } else if (trans == 2) {
-      getStatusDesginPanel().getTransferField().setForeground(
-        Color.YELLOW);
-    }
-    if (hander == 0) {
-      getStatusDesginPanel().getHandWorkField().setForeground(Color.GREEN);
-    } else if (hander == 1) {
-      getStatusDesginPanel().getHandWorkField().setForeground(Color.RED);
-    } else if (hander == 2) {
-      getStatusDesginPanel().getHandWorkField().setForeground(
-        Color.YELLOW);
-    }
-    if (tare == 0) {
-      getStatusDesginPanel().getSkipWeightField().setForeground(
-        Color.GREEN);
-    } else if (tare == 1) {
-      getStatusDesginPanel().getSkipWeightField().setForeground(Color.RED);
-    } else if (tare == 2) {
-      getStatusDesginPanel().getSkipWeightField().setForeground(
-        Color.YELLOW);
-    }
-    if (gross == 0) {
-      getStatusDesginPanel().getGrossWeightField().setForeground(
-        Color.GREEN);
-    } else if (gross == 1) {
-      getStatusDesginPanel().getGrossWeightField().setForeground(
-        Color.RED);
-    } else if (gross == 2) {
-      getStatusDesginPanel().getGrossWeightField().setForeground(
-        Color.YELLOW);
-    }
-  }*/
 
 	public void setHistoryValue(UFDouble max, UFDouble min, UFDouble avg, UFDouble wait)
 	{
@@ -441,7 +365,8 @@ public class MeasPanel   extends UIPanel  implements Observer{
 	}
 
 	public CodeStack getCodeStack()
-	{ 
+	{
+		//≈–∂œ «∑Ò∆Ù∂Ø∫ÏÕ‚
 		if(this.codeStack == null){
 			UFBoolean israd = this.measdoc.getAttributeValue("isradition") == null ? UFBoolean.valueOf("N") : UFBoolean.valueOf(this.measdoc.getAttributeValue("isradition").toString());
 			if ( null !=this.measdoc.getAttributeValue("infraredport")  && (israd.booleanValue()))

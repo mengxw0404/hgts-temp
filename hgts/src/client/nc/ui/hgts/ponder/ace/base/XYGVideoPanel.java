@@ -338,15 +338,15 @@ public class XYGVideoPanel
   
   private int translateImageType(int imageType)
   {
-   /* if (imageType == MeasureitfVO.IMAGETYPE_RGB24.intValue()) {
-      return 1;
-    }
-    if (imageType == MeasureitfVO.IMAGETYPE_RGB32.intValue()) {
-      return 1;
-    }
-    if (imageType == MeasureitfVO.IMAGETYPE_RGB555.intValue()) {
-      return 9;
-    }*/
+//    if (imageType == MeasureitfVO.IMAGETYPE_RGB24.intValue()) {
+//      return 1;
+//    }
+//    if (imageType == MeasureitfVO.IMAGETYPE_RGB32.intValue()) {
+//      return 1;
+//    }
+//    if (imageType == MeasureitfVO.IMAGETYPE_RGB555.intValue()) {
+//      return 9;
+//    }
     return 0;
   }
   

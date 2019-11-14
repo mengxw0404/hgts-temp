@@ -76,15 +76,15 @@ public class OrgPicDlg
   
   public void loadVedio()
   {
-    /*for (CaptureDevice cd : ) {
-      if (getLocalFileUrl().equals(cd.getDevicePath()))
-      {
-        add(getPanel());
-        this.panel.add(getJTabbedPane0(), null);
-        this.tabPane.add("", cd);
-        this.tabPane.setSelectedIndex(0);
-      }
-    }*/
+//    for (CaptureDevice cd : ) {
+//      if (getLocalFileUrl().equals(cd.getDevicePath()))
+//      {
+//        add(getPanel());
+//        this.panel.add(getJTabbedPane0(), null);
+//        this.tabPane.add("", cd);
+//        this.tabPane.setSelectedIndex(0);
+//      }
+//    }
   }
   
   public void playVedio()
