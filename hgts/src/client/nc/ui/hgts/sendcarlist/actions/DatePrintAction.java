@@ -16,6 +16,8 @@ import nc.ui.pubapp.uif2app.query2.action.DefaultRefreshAction;
 import nc.ui.pubapp.uif2app.view.BillForm;
 import nc.ui.pubapp.uif2app.view.BillListView;
 import nc.ui.pubapp.uif2app.view.ShowUpableBillForm;
+import nc.ui.trade.business.HYPubBO_Client;
+import nc.uif.pub.exception.UifException;
 import nc.vo.hgts.pub.HgtsPubTool;
 import nc.vo.hgts.sendcarlist.AggSendCarListHVO;
 import nc.vo.hgts.sendcarlist.SendCarListBVO;
@@ -178,36 +180,44 @@ public class DatePrintAction extends BaseMetaDataBasedPrintAction {
 	 * @param billtype :1==卡片 ，2==列表
 	 */
 	private AggSendCarListHVO getCloseVOFromBillView(int billtype) {
-		if (ArrayUtils.isEmpty(this.selectIndex)) {
-			return null;
-		}
-		// 获得旧VO，然后将表体设为选择的VO，得到选择数据VO
-		AggSendCarListHVO oldVO = (AggSendCarListHVO) this.getModel().getSelectedData();
-		if (null == oldVO) {
-			return null;
-		}
-		AggSendCarListHVO vo = (AggSendCarListHVO) oldVO.clone();
-		BillIndex index = new BillIndex(new AggSendCarListHVO[] { vo });
-		IVOMeta meta = vo.getMetaData().getVOMeta(SendCarListBVO.class);
-		SendCarListBVO[] itemVOs = new SendCarListBVO[this.selectIndex.length];
-		for (int i = 0; i < this.selectIndex.length; ++i) {
-			String pk_sendcarlist_b = "";
-			//1==卡片 ，2==列表
-			if(billtype == 1){
-				pk_sendcarlist_b = (String) this.editor.getBillCardPanel()
-						.getBodyValueAt(this.selectIndex[i], "pk_sendcarlist_b");
-			}else{
-				pk_sendcarlist_b = (String) this.list.getBillListPanel().getBodyBillModel()
-						.getValueAt(this.selectIndex[i],"pk_sendcarlist_b");
-			}
-			SendCarListBVO itemVO = (SendCarListBVO) index.get(meta, pk_sendcarlist_b);
-			if (null == itemVO) {
+		try {
+
+			if (ArrayUtils.isEmpty(this.selectIndex)) {
 				return null;
 			}
-			itemVOs[i] = itemVO;
+			// 获得旧VO，然后将表体设为选择的VO，得到选择数据VO
+			AggSendCarListHVO oldVO = (AggSendCarListHVO) this.getModel().getSelectedData();
+			if (null == oldVO) {
+				return null;
+			}
+			AggSendCarListHVO vo = (AggSendCarListHVO) oldVO.clone();
+			//		BillIndex index = new BillIndex(new AggSendCarListHVO[] { vo });
+			//		IVOMeta meta = oldVO.getMetaData().getVOMeta(SendCarListBVO.class);
+			SendCarListBVO[] itemVOs = new SendCarListBVO[this.selectIndex.length];
+			for (int i = 0; i < this.selectIndex.length; ++i) {
+				String pk_sendcarlist_b = "";
+				//1==卡片 ，2==列表
+				if(billtype == 1){
+					pk_sendcarlist_b = (String) this.editor.getBillCardPanel()
+							.getBodyValueAt(this.selectIndex[i], "pk_sendcarlist_b");
+				}else{
+					pk_sendcarlist_b = (String) this.list.getBillListPanel().getBodyBillModel()
+							.getValueAt(this.selectIndex[i],"pk_sendcarlist_b");
+				}
+				SendCarListBVO  itemVO = (SendCarListBVO) HYPubBO_Client.queryByPrimaryKey(SendCarListBVO.class, pk_sendcarlist_b);
+
+				if (null == itemVO) {
+					return null;
+				}
+				itemVOs[i] = itemVO;
+			}
+			vo.setChildrenVO(itemVOs);
+			return vo;
+		} catch (UifException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
 		}
-		vo.setChildrenVO(itemVOs);
-		return vo;
+		return null;
 	}
 	/**
 	 * 若打印按钮内，没有注册打印监听器，设置默认的打印监听器

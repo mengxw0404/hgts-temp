@@ -8,7 +8,7 @@ import nc.vo.hgts.pub.HgtsPubTool;
 import nc.vo.pubapp.pattern.exception.ExceptionUtils;
 
 /**
- * 取消审批前规则
+ * 日计划 取消审批前规则
  * @author cl
  * 2019年6月19日
  */
@@ -35,6 +35,12 @@ public class BeforeUnApproveCheckRule implements IRule<AggDayplanSendHVO> {
 					DayplanSendBVO item=bodys[i];
 					String dayplandetailno=HgtsPubTool.getStringNullAsTrim(item.getAttributeValue("dayplandetailno"));
 					if(!"".equals(dayplandetailno)){
+						ExceptionUtils.wrappBusinessException("已生成日计划发运单明细，请先删除下游单据后再执行此操作");
+						break;
+					}
+					
+					String carnum=HgtsPubTool.getStringNullAsTrim(item.getAttributeValue("def6"));
+					if(HgtsPubTool.getUFDoubleNullAsZero(carnum).intValue()>0){
 						ExceptionUtils.wrappBusinessException("已生成日计划发运单明细，请先删除下游单据后再执行此操作");
 						break;
 					}

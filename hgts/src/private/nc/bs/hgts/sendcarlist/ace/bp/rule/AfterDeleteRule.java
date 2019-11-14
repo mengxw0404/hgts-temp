@@ -37,20 +37,19 @@ public class AfterDeleteRule implements IRule<AggSendCarListHVO>{
 		if(null==vos || vos.length==0){
 			return;
 		}
-
 		try {
 			for(AggSendCarListHVO bill:vos){
 				SendCarListBVO[] items=(SendCarListBVO[]) bill.getChildrenVO();
-				String pk_dayplansend_b=HgtsPubTool.getStringNullAsTrim(items[0].getAttributeValue("csourcebid"));
-
-				SendCarListHVO HVO =vos[0].getParentVO();
-
-				String sql="select count(0) num from hgts_sendcarlist_b where nvl(dr,0)=0 and csourcebid='"+pk_dayplansend_b+" and pk_sendcarlist <>'"+HVO.getPrimaryKey()+"'";
-				Map<String,Integer> obj = (Map<String, Integer>) getDao().executeQuery(sql, new MapProcessor());
-				String upadte_sql="update hgts_dayplansend_b set def6='"+ obj.get("num").intValue()+"' where pk_dayplansend_b='"+pk_dayplansend_b+"'";
-				getDao().executeUpdate(upadte_sql);
-
-
+				for(SendCarListBVO item : items){
+					String pk_dayplansend_b=HgtsPubTool.getStringNullAsTrim(item.getAttributeValue("csourcebid"));
+					SendCarListHVO HVO =bill.getParentVO();
+					
+					String sql="select count(0) num from hgts_sendcarlist_b where nvl(dr,0)=0 and csourcebid='"+pk_dayplansend_b+"' and pk_sendcarlist <>'"+HVO.getPrimaryKey()+"'";
+					Map<String,Integer> obj = (Map<String, Integer>) getDao().executeQuery(sql, new MapProcessor());
+					
+					String upadte_sql="update hgts_dayplansend_b set def6='"+ obj.get("num").intValue()+"' where pk_dayplansend_b='"+pk_dayplansend_b+"'";
+					getDao().executeUpdate(upadte_sql);
+				}
 			}
 		} catch (DAOException e) {
 			e.printStackTrace();

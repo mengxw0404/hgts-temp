@@ -446,6 +446,8 @@
 	<bean id="metaDataBasedPrintActiona" class="nc.ui.hgts.sendcarlist.actions.DatePrintAction">
 		<property name="model"><ref bean="bmModel"/></property>
 		<property name="actioncode" value="Print"></property>
+		<property name="editor"><ref bean="billForm"/></property>
+		<property name="list"><ref bean="billListView"/></property>
 		<property name="actionname" value="´òÓ¡"></property>
 		<property name="preview" value="false"></property>
 		<property name="nodeKey" value="ot" />
