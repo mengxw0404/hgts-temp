@@ -38,7 +38,7 @@ public class ImpQueryDlg extends UIDialog {
 	public UIRefPane begdateRef;
 	public UIRefPane enddateRef;
 
-	private JLabel lborg = null;// 客户
+	private JLabel lborg = null;// 组织
 	private UIRefPane orgText = null;
 	
 	private JLabel lbywy = null;// 客户
@@ -187,17 +187,20 @@ public class ImpQueryDlg extends UIDialog {
 			orgText.setBounds(150, 30, 150, 22);
 			orgText.setVisible(true);
 			//编辑事件监听
-//			orgText.addRefEditListener(new RefEditListener() {
-//				@Override
-//				public boolean beforeEdit(RefEditEvent refeditevent) {
-//					// TODO 自动生成的方法存根
-//					if(getOrgText().getRefPK()!=null){
-//						ywyText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
-//						mzText.getRefModel().setPk_org(getOrgText().getRefPK().toString());
-//					}
-//					return true;
-//				}
-//			});
+			orgText.addRefEditListener(new RefEditListener() {
+				@Override
+				public boolean beforeEdit(RefEditEvent refeditevent) {
+					//增加当前登陆用户授权组织的条件
+					StringBuffer wheresql = new StringBuffer();
+					wheresql.append(" org_orgs.pk_org in (select sub.pk_org ");
+					wheresql.append(" 		  from sm_user_role role");
+					wheresql.append(" 		  inner join  sm_subject_org sub");
+					wheresql.append(" 		  on role.pk_role = sub.subjectid");
+					wheresql.append(" 		 where cuserid = '"+ InvocationInfoProxy.getInstance().getUserId()+"')");
+					orgText.getRefModel().setWherePart(wheresql.toString());
+					return true;//返回false 则不可编辑
+				}
+			});
 			//编辑后事件监听
 			orgText.addValueChangedListener(new ValueChangedListener() {	
 				@Override
