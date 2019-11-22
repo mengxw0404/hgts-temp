@@ -95,15 +95,17 @@ public class AceHeadTailAfterEditHandler implements IAppEventHandler<CardHeadTai
 											bvo=list.get(0);
 											gpprice=HgtsPubTool.getUFDoubleNullAsZero(bvo.getAttributeValue("gpprice"));
 										}else{
-											// 3、公共价格:客户分类为空的
-											String s_sql=coditions+" and pk_cust='~' and (def1 is null or def1='~') "+orderfiled;
-											list=(List<PricepolicyBVO>) bs.executeQuery(s_sql, new BeanListProcessor(PricepolicyBVO.class));
-											if(null !=list && list.size()>0){
-												bvo=list.get(0);
-												gpprice=HgtsPubTool.getUFDoubleNullAsZero(bvo.getAttributeValue("gpprice"));
-											}else{
-												MessageDialog.showHintDlg(null, "提示", "未定义对应的价格政策");
-											}
+											//20191112-价格政策公共价格属性注释
+											MessageDialog.showHintDlg(null, "提示", "未定义对应的价格政策");
+//											// 3、公共价格:客户分类为空的
+//											String s_sql=coditions+" and pk_cust='~' and (def1 is null or def1='~') "+orderfiled;
+//											list=(List<PricepolicyBVO>) bs.executeQuery(s_sql, new BeanListProcessor(PricepolicyBVO.class));
+//											if(null !=list && list.size()>0){
+//												bvo=list.get(0);
+//												gpprice=HgtsPubTool.getUFDoubleNullAsZero(bvo.getAttributeValue("gpprice"));
+//											}else{
+//												MessageDialog.showHintDlg(null, "提示", "未定义对应的价格政策");
+//											}
 										}
 									}
 									if(gpprice.doubleValue() !=0){	
