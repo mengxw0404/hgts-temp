@@ -40,8 +40,7 @@ public class N_YX01_APPROVE extends AbstractPfAction<AggPricepolicyHVO> {
 		try {
 			bills = operator.approve(clientFullVOs, originBills);
 
-			// TODO 此次补丁注释,补丁后放开此注释 2017-11-7 
-			// 2018-4-10 暂时注释
+			//审批后自动关闭对用的发运通知单
 			AfterApproveRule rule=new AfterApproveRule();
 			rule.process(clientFullVOs);
 		} catch (BusinessException e) {
