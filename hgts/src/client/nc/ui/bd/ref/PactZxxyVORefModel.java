@@ -1,12 +1,16 @@
 package nc.ui.bd.ref;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import nc.ui.bd.ref.AbstractRefModel;
 import nc.vo.hgts.pub.HgtsPubConst;
 
 public class PactZxxyVORefModel extends AbstractRefModel {
-
+	private Set fomulaSet;
 	public PactZxxyVORefModel() {
 		super();
+		fomulaSet = new HashSet();
 		init();
 	}
 	
@@ -30,17 +34,21 @@ public class PactZxxyVORefModel extends AbstractRefModel {
 		"矿别",
 		"运输方式"	
 		});
-		
+		setDefaultFieldCount(4);
+	
+		//不现实参照
 		setHiddenFieldCode(new String[] {
-				"hgts_pact_b.pk_pact_b"				
+				"hgts_pact_b.pk_pact_b"
 		});
 		setPkFieldCode("hgts_pact_b.pk_pact_b");
 		
-		setWherePart("1=1 and pk_billtypeid='"+HgtsPubConst.CONTRACT_ZXXY+"' and nvl(hgts_sopact.dr,0)=0 and nvl(hgts_pact_b.dr,0)=0 and hgts_sopact.approvestatus=1 ");
 		setTableName("hgts_sopact inner join hgts_pact_b on hgts_sopact.pk_pact=hgts_pact_b.pk_pact");
+		setWherePart("1=1 and pk_billtypeid='"+HgtsPubConst.CONTRACT_ZXXY+"' and nvl(hgts_sopact.dr,0)=0 and nvl(hgts_pact_b.dr,0)=0 and hgts_sopact.approvestatus=1 ");
+		
 		setRefCodeField("vbillno");
-		setRefNameField("vbillno");
-	
+		setRefNameField("hgts_sopact.def4");
+	    resetFieldName();
+	   
 	}
 	
 }

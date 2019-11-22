@@ -1,11 +1,5 @@
 package nc.ui.bd.ref;
 
-import nc.bs.framework.common.NCLocator;
-import nc.itf.hgts.ponder.IPonderItf;
-import nc.ui.bd.ref.AbstractRefModel;
-import nc.ui.hgts.pub.comm.ClientContext;
-import nc.vo.pub.BusinessException;
-import nc.vo.pubapp.AppContext;
 
 /**
  * ≈…≥µµ• ”√
@@ -71,15 +65,7 @@ public class ToolVOToPcdRefModel extends AbstractRefModel {
 			StringBuffer sqlwhe = new StringBuffer();
 			sqlwhe.append("1=1 and nvl(dr,0)=0 and istrue='Y' ") ;
 			return sqlwhe.toString();
-//			IPonderItf ponder = NCLocator.getInstance().lookup(IPonderItf.class);
-//			Object ofmine = ponder.getDateVO( new ClientContext().getConfigName(), AppContext.getInstance().getPkGroup()).getAttributeValue("ofmine");
-//			StringBuffer sqlwhe = new StringBuffer();
-//			if(ofmine!=null && !ofmine.toString().equals("")){
-//				sqlwhe.append("def1 = '"+ofmine.toString()+"' and istrue='Y' ");
-//			}else{
-//				sqlwhe.append("1=1 and nvl(dr,0)=0 and istrue='Y' ") ;
-//			}
-//			return sqlwhe.toString();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

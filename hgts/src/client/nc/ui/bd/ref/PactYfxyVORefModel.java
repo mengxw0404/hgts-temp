@@ -38,6 +38,7 @@ public class PactYfxyVORefModel extends AbstractRefModel {
 				"运输公司"
 				//"结算方式"
 		});
+		setDefaultFieldCount(4);
 		setHiddenFieldCode(new String[] {
 				"hgts_pact_b.pk_pact_b"				
 		});
@@ -45,7 +46,7 @@ public class PactYfxyVORefModel extends AbstractRefModel {
 		setWherePart("1=1 and pk_billtypeid='"+HgtsPubConst.CONTRACT_YFXY+"' and nvl(hgts_sopact.dr,0)=0 and nvl(hgts_pact_b.dr,0)=0 and hgts_sopact.approvestatus=1 ");
 		setTableName("hgts_sopact inner join hgts_pact_b on hgts_sopact.pk_pact=hgts_pact_b.pk_pact");
 		setRefCodeField("vbillno");
-		setRefNameField("vbillno");
+		setRefNameField("hgts_sopact.def4");
 
 	}
 

@@ -42,9 +42,9 @@ public class SendnoticebillHVORefModel extends AbstractRefModel {
 		"µ½Õ¾"
 				});
 		setHiddenFieldCode(new String[] {
-		"hgts_sendnoticebill.pk_sendnoticebill"
+				"hgts_sendnoticebill.pk_sendnoticebill"
 		
-			});
+		});
 		setPkFieldCode("hgts_sendnoticebill.pk_sendnoticebill");
 		setWherePart(" 1=1 and nvl(hgts_sendnoticebill.dr,0)=0 "
 				+ " and nvl(hgts_sendnoticebill_b.dr,0)=0 "
@@ -57,7 +57,7 @@ public class SendnoticebillHVORefModel extends AbstractRefModel {
 				+ " and nvl(rowcloseflag,'N')='N'");
 		setTableName("hgts_sendnoticebill hgts_sendnoticebill inner join hgts_sendnoticebill_b hgts_sendnoticebill_b on hgts_sendnoticebill.pk_sendnoticebill=hgts_sendnoticebill_b.pk_sendnoticebill");
 		setRefCodeField("vbillno");
-		setRefNameField("pk_cust");
+		setRefNameField("vbillno");
 		setDefaultFieldCount(15);
 	}
 	
