@@ -26,11 +26,12 @@ public class AceBodyAfterEditHandler extends ParentAceBodyAfterEditHandler /*imp
 
 	@Override
 	public void handleAppEvent(CardBodyAfterEditEvent e) {
-		if(e.getKey().equals("def6")){
+		if(e.getKey().equals("def6")){//修改含税单价
 			BillModel bm = e.getBillCardPanel().getBillModel();
 			int row=e.getRow();
 			//数量：结算金额/结算单价jsmny /jsprice
 			UFDouble num = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, "jsmny")).div( HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, "jsprice"))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			//含税单价
 			UFDouble newDef6 = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, e.getKey())).setScale(2, BigDecimal.ROUND_HALF_UP);//调整后含税单价
 			UFDouble rate = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row,"rate")).setScale(2, BigDecimal.ROUND_HALF_UP);//获取税率
 			UFDouble newDef7 = newDef6.div(UFDouble.ONE_DBL.add(rate.div(100))).setScale(2, BigDecimal.ROUND_HALF_UP);//无税单价：含税/1+R
@@ -41,7 +42,23 @@ public class AceBodyAfterEditHandler extends ParentAceBodyAfterEditHandler /*imp
 			bm.setValueAt(newDef8,row,"def8");		    //调价后价税合计 
 			bm.setValueAt(newDef9,row,"def9");	        //调价后无税金额
 			bm.setValueAt(newDef10,row,"def10");		//调价后税额
-		}else{
+		} 
+		else if (e.getKey().equals("def8")){//修改价税合计
+			BillModel bm = e.getBillCardPanel().getBillModel();
+			int row=e.getRow();
+			//数量：结算金额/结算单价jsmny /jsprice
+			UFDouble num = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, "jsmny")).div( HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, "jsprice"))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			UFDouble newDef8 = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row, e.getKey())).setScale(2, BigDecimal.ROUND_HALF_UP);//调整后价税合计 
+			UFDouble rate = HgtsPubTool.getUFDoubleNullAsZero(bm.getValueAt(row,"rate")).setScale(2, BigDecimal.ROUND_HALF_UP);//获取税率
+			UFDouble newDef6 = newDef8.div(num).setScale(2, BigDecimal.ROUND_HALF_UP);//含税单价=价税合计/数量
+			UFDouble newDef7 = newDef6.div(UFDouble.ONE_DBL.add(rate.div(100))).setScale(2, BigDecimal.ROUND_HALF_UP);//无税单价：含税/1+R
+			UFDouble newDef9 = newDef7.multiply(num).setScale(2, BigDecimal.ROUND_HALF_UP);//无税金额 ：无税*数量
+			UFDouble newDef10 = newDef8.sub(newDef9).setScale(2, BigDecimal.ROUND_HALF_UP);//税额:价税合计-无税金额
+			bm.setValueAt(newDef6,row,"def6");			//调价后含税单价
+			bm.setValueAt(newDef7,row,"def7");			//调价后无税单价
+			bm.setValueAt(newDef9,row,"def9");	        //调价后无税金额
+			bm.setValueAt(newDef10,row,"def10");		//调价后税额		
+		} else {
 			super.handleAppEvent(e);
 		}
 
