@@ -132,7 +132,8 @@ public class CloseSendbillAction extends NCAction {
 						// 2、客户分类
 						wherepart = wherepart +" and pk_cust in (select pk_customer from bd_customer where nvl(dr,0)=0 and ecotypesincevfive='"+pk_custclass+"') ";
 					}else{
-						// 3、公共：条件即 wherepart							
+						// 3、公共：条件即 wherepart	
+						return;
 					}
 				}
 
