@@ -58,9 +58,8 @@ IBillModelRowStateChangeEventListener {
 		// TODO 自动生成的方法存根
 		try {
 			String mineid = getParents().getMeasDoc().getAttributeValue("ofmine") == null ?"" : getParents().getMeasDoc().getAttributeValue("ofmine").toString();
-//			Object flag=getParents().getHeadCardPanel().getHeadItem("flag_data").getValueObject();
-//			String flag_data=flag==null || "".equals(flag)?"1":flag.toString();
-			DoListInvoiceAgg[] agg = ponder.getDoListInvoiceAgg(mineid,null,"","");
+			// 0:进 保留原始数据 ; 1:出:
+			DoListInvoiceAgg[] agg = ponder.getDoListInvoiceAgg(mineid,getParents().getFReceOrSend()+"","","");
 			if(null==agg || agg.length==0){
 //				flag_data="2";
 				agg = ponder.getDoListInvoiceAgg(mineid,null,"","");

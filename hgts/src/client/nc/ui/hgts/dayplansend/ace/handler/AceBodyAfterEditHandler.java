@@ -45,7 +45,8 @@ public class AceBodyAfterEditHandler implements IAppEventHandler<CardBodyAfterEd
 			panel.setBodyValueAt(pk_sendnoticebill, e.getRow(), "pk_sendnoticebill");
 			panel.setBodyValueAt(pk_cust, e.getRow(), "pk_cust");
 			panel.setBodyValueAt(pk_mine, e.getRow(), "pk_mine");
-			panel.setBodyValueAt(null!=e.getBillCardPanel().getHeadItem("pk_dept").getValue() ?e.getBillCardPanel().getHeadItem("pk_dept").getValue():pk_dept, e.getRow(), "pk_dept");
+			//panel.setBodyValueAt(null!=e.getBillCardPanel().getHeadItem("pk_dept").getValue() ?e.getBillCardPanel().getHeadItem("pk_dept").getValue():"", e.getRow(), "pk_dept");
+			panel.setBodyValueAt(pk_dept, e.getRow(), "pk_dept");
 			panel.setBodyValueAt(pk_stordoc, e.getRow(), "pk_stordoc");
 			panel.setBodyValueAt(pk_material, e.getRow(), "pk_material");
 			panel.setBodyValueAt(syl, e.getRow(), "syl");

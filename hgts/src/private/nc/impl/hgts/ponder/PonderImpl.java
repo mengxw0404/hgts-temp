@@ -103,6 +103,7 @@ public class PonderImpl implements IPonderItf {
 
 	/**
 	 *  查询未过毛重的计量数据， 进：中间面板的数据显示； 出：表尾面板的数据显示
+	 *  flag_data 0:进 保留原始数据 ; 1:出: 根据当前操作员 设置司磅员及 所属部门
 	 */
 	public DoListInvoiceAgg[] getDoListInvoiceAgg(String ofmine,String flag_data,String pk_material,String pk_cust) throws BusinessException{
 
@@ -116,9 +117,7 @@ public class PonderImpl implements IPonderItf {
 		if(!ofmine.equals("")){
 			sql.append(" and h.pk_kc = '"+ofmine+"'");
 		}
-//		if(null !=flag_data && !"".equals(flag_data) && !flag_data.equals("3")){ // 			
-//			sql.append(" and h.flag_data='"+flag_data+"'");			
-//		}
+
 		if(null !=pk_cust && !"".equals(pk_cust)){
 			sql.append(" and h.pk_cust = "+pk_cust);
 		}
@@ -126,6 +125,10 @@ public class PonderImpl implements IPonderItf {
 			sql.append(" and b.pz = "+pk_material);
 		}
 		sql.append(" and isnull(b.dr,0)=0 and isnull(h.dr,0)=0 ");
+		//出库判断商品类型，皮重不为空
+		if(null!=flag_data && flag_data.equals("1")){
+			sql.append(" and ( (h.jytype = 1 and b.piz > 0) or h.jytype != 1) ");	
+		}
 		
 		sql.append(" order by b.def6,b.pz "); // 当天进矿场序号
 
@@ -166,6 +169,7 @@ public class PonderImpl implements IPonderItf {
 			boolean isDIn=this.isDrxIn(ofmine, aggPonder);
 			//0-进；1-出 
 			if(fReceOrSend == 0){
+				HeadVO.setAttributeValue("sby",  AppContext.getInstance().getPkUser());//司磅员-进
 				if(null == HeadVO.getPrimaryKey()){
 					try {
 						//获取单据号
@@ -206,9 +210,21 @@ public class PonderImpl implements IPonderItf {
 						e.printStackTrace();
 					} 
 				}else{
+					HeadVO.setAttributeValue("vbillstatus", -1);	
+					HeadVO.setAttributeValue("dr", 0);
+					HeadVO.setAttributeValue("iszjbgyy","N");
 					dao.updateVO(HeadVO);
 					for(InvoicesheetBVO bodyVO:badyVOs){
 						bodyVO.setAttributeValue("dr", 0);
+						if(!isDIn || jytype==1 || jytype==4){								
+							bodyVO.setAttributeValue("piztime", new UFDateTime(new Date()).toString());
+						}else{
+							bodyVO.setAttributeValue("maoztime", new UFDateTime(new Date()).toString());
+						}
+						// 2018-3-21 add 进厂序号  begin
+						String code=this.createCode(dbilldate, pk_kc, 0,null);
+						bodyVO.setAttributeValue("def6", code);
+						// 2018-3-21
 					}
 					dao.updateVOArray(badyVOs);	
 					return badyVOs;
@@ -222,7 +238,7 @@ public class PonderImpl implements IPonderItf {
 				HeadVO.setAttributeValue("iszjbgyy","N");
 				HeadVO.setAttributeValue("dbilldate", AppContext.getInstance().getBusiDate());
 				for(InvoicesheetBVO bodyVO:badyVOs){
-					
+					bodyVO.setAttributeValue("bsby",AppContext.getInstance().getPkUser());//司磅员-出
 					if(!isDIn || jytype==1 || jytype==4){						
 						bodyVO.setAttributeValue("maoztime", new UFDateTime(new Date()).toString());
 					}else{

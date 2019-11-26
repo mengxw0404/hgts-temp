@@ -41,8 +41,8 @@ public class N_YX01_APPROVE extends AbstractPfAction<AggPricepolicyHVO> {
 			bills = operator.approve(clientFullVOs, originBills);
 
 			//审批后自动关闭对用的发运通知单
-			AfterApproveRule rule=new AfterApproveRule();
-			rule.process(clientFullVOs);
+		//	AfterApproveRule rule=new AfterApproveRule();
+		//	rule.process(clientFullVOs);
 		} catch (BusinessException e) {
 			ExceptionUtils.wrappBusinessException(e.getMessage());
 		}

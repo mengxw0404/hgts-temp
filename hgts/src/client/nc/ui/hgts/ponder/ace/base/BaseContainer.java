@@ -5,7 +5,9 @@ import java.awt.Panel;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
+import nc.bs.pub.im.exception.BusinessException;
 import nc.ui.pub.ButtonObject;
 import nc.ui.pub.ToftPanel;
 
@@ -32,10 +34,7 @@ public abstract class BaseContainer extends ToftPanel{
 	protected ButtonObject carHBTN;
 	protected ButtonObject carWeightBTN;
 	protected ButtonObject queryBTN;
-	
-//	protected ButtonObject nBTN;
-//	protected ButtonObject wBTN;
-//	protected ButtonObject aBTN;
+
 
 	public BaseContainer()
 	{
@@ -83,7 +82,24 @@ public abstract class BaseContainer extends ToftPanel{
 		add(getCardLayoutPanel());
 
 		getSpanel().setDividerLocation(335);
-
+		//摄像头开发
+		 if (false) {//getBillWorkPanel().getMeasDoc().getDef2().booleanValue()
+		      SwingUtilities.invokeLater(new Runnable()
+		      {
+		        public void run()
+		        {
+		          try
+		          {
+		            BaseContainer.this.getHardWarePanel().getVedioPanel().startRealPlay(false, 0);
+		          }
+		          catch (BusinessException e)
+		          {
+		            FmpubLogger.error(e.getMessage(), e);
+		            BaseContainer.this.showErrorMessage(e.getMessage());
+		          }
+		        }
+		      });
+		    }
 	}
 
 	public abstract BillWorkPanel getBillWorkPanel();
@@ -124,15 +140,7 @@ public abstract class BaseContainer extends ToftPanel{
 		
 		queryBTN = new ButtonObject("查询","",0,"query");
 		queryBTN.setEnabled(true);
-		
-//		nBTN = new ButtonObject("N","",0,"n");
-//		nBTN.setEnabled(true);
-//		wBTN = new ButtonObject("W","",0,"w");
-//		wBTN.setEnabled(true);
-//		
-//		aBTN = new ButtonObject("A","",0,"a");
-//		aBTN.setEnabled(true);
-		
+			
 		return  Def_ButtonGroup = (new ButtonObject[] {
 				tareBTN, grossBTN,fubBTN,
 				saveBTN, cancelBTN,
@@ -170,14 +178,7 @@ public abstract class BaseContainer extends ToftPanel{
 			getBillWorkPanel().onCarWeight();  
 		}else if(bo==queryBTN){ // 查询
 			getBillWorkPanel().onQuery();
-		}/*else if(bo==nBTN){
-			getBillWorkPanel().onNBtn();
-		}else if(bo==wBTN){
-			getBillWorkPanel().onWBtn();
-		}else if(bo==aBTN){
-			getBillWorkPanel().onABtn();
-		}*/
-
+		}
 	}
 
 	public abstract String getTitle();

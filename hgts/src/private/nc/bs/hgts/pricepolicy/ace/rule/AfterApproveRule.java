@@ -112,11 +112,10 @@ public class AfterApproveRule implements IRule<AggPricepolicyHVO>{
 							return;
 						}
 					}
-					
+				
 					SendnoticebillHVO[] hvos=(SendnoticebillHVO[]) dmo.queryByWhereClause(SendnoticebillHVO.class,wherepart);
 					if(null !=hvos && hvos.length>0){
-						
-						
+
 						for(int j=0;j<hvos.length;j++){
 							SendnoticebillHVO hvo=hvos[j];
 							String vbillno=HgtsPubTool.getStringNullAsTrim(hvo.getAttributeValue("vbillno"));

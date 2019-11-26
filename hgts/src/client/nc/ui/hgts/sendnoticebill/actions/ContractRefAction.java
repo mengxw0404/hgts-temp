@@ -294,7 +294,6 @@ public class ContractRefAction extends nc.ui.pubapp.uif2app.actions.AddAction {
 					AggSendnoticebillHVO temp_aggvo=(AggSendnoticebillHVO) col.colNewPrice(aggvo);
 					aggvo.setChildrenVO(temp_aggvo.getChildrenVO());
 				}
-//				FieldEventUIUtil.fireUILoadComplete((BillManageModel) getModel());
 				this.getEditor().setValue(aggvo);
 
 				String[] tablecode=new String[]{"hgts_sendnoticebill_b","pk_quality_b","pk_yzyj_b","pk_xy_b"};

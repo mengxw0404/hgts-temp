@@ -33,7 +33,7 @@ public class AceBodyAfterEditHandler extends ParentAceBodyAfterEditHandler {
 			String pk_busitype=HgtsPubTool.getStringNullAsTrim(panel.getHeadItem("pk_busitype").getValueObject());
 			String pk_balatype=HgtsPubTool.getStringNullAsTrim(panel.getHeadItem("pk_balatype").getValueObject());
 			String kb=HgtsPubTool.getStringNullAsTrim(panel.getBillModel("pk_pact_b").getValueAt(e.getRow(), "kuang"));
-			if(/*!"".equals(pk_org) &&*/  !"".equals(pk_cust) 
+			if(/*!"".equals(pk_org) &&*/ !"".equals(pk_cust) 
 					&& !"".equals(pk_busitype) && !"".equals(kb) && !"".equals(pk_inv)
 					&& !"".equals(pk_balatype)){
 				AggPactVO aggvo=(AggPactVO) panel.getBillValueVO(AggPactVO.class.getName(), PactVO.class.getName(), PactBVO.class.getName());
@@ -42,7 +42,6 @@ public class AceBodyAfterEditHandler extends ParentAceBodyAfterEditHandler {
 					//此处将价格政策写入获得的VO
 					aggvo=(AggPactVO) col.colPrice(aggvo);
 					//TODO 需获取aggvo.getTableVO("pk_pact_b")对象，将含税单价==挂牌价格，并重新计算金额。税额
-					
 					panel.getBillModel("pk_pact_b").setBodyDataVO(aggvo.getTableVO("pk_pact_b"));
 				} catch (BusinessException e1) {
 					e1.printStackTrace();

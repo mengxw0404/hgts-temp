@@ -393,7 +393,7 @@ public class QryBDAction extends nc.ui.pubapp.uif2app.actions.AddAction {
 			zxbvo.setAttributeValue("jsprice",price);//;//结算单价根据发运通知单中的装卸协议装卸单价
 			zxbvo.setAttributeValue("jsmny", price.multiply(zxton));//结算金额
 			zxbvo.setAttributeValue("rate",HgtsPubTool.getUFDoubleNullAsZero(zxpvo.getAttributeValue("rate")).setScale(0, 4));//税率：根据发运通知单中的装卸协议装卸税率
-			zxbvo.setAttributeValue("def16", "Y");//是否传发票
+			zxbvo.setAttributeValue("def16", "Y");//是否可以传发票
 			List<HjsettleBVO> nList = new ArrayList<HjsettleBVO>();
 			for(HjsettleBVO bo:bvos){
 				bo.setAttributeValue("def16", "Y");
@@ -545,11 +545,10 @@ public class QryBDAction extends nc.ui.pubapp.uif2app.actions.AddAction {
 				QuaDj dj=new QuaDj();
 				if(null !=result){	
 					UFDouble tz_zlzb=UFDouble.ZERO_DBL;
-					
+					//质量指标是适用的项目
 					String isCurPrj=dj.isCurPrj();					
-					if("1".equals(isCurPrj)){
+					if("1".equals(isCurPrj)){//福山计算逻辑
 						// 2019年3月7日 modify 取出质量指标  调整价格   由之前从价格政策上取，现在统一从通知单上取
-						//	tz_zlzb=getTz_quaindex(pk_pricepolicy, jgz, huif,pk_busitype);
 						if(null !=settlezt && !"".equals(settlezt)){
 							if("1".equals(settlezt)){ // 买方						
 								tz_zlzb=this.getTz_quaindex(pk_send_h, tool, custhuif);
@@ -559,16 +558,14 @@ public class QryBDAction extends nc.ui.pubapp.uif2app.actions.AddAction {
 						}else{ // 卖方					
 							tz_zlzb=this.getTz_quaindex(pk_send_h, tool, huif);
 						}
-
 						if(null !=map && map.size()>0){
 							String rowno=map.get("rowno");
 							vnote=vnote+"质量指标("+rowno+")"+tz_zlzb.setScale(2, UFDouble.ROUND_HALF_UP);
 						}
-						map=new HashMap<String,String>();
-					
+						map=new HashMap<String,String>();					
 						// 质量指标：根据灰分算出的值如果是正数，表示含杂质少，得上调，负数下调，故加法	
 						price=price.add(tz_zlzb);
-					}else{						
+					}else{	//窑街计算					
 						// 1、售价
 						UFDouble u_price=dj.getTz_quaindex_sj(infor, pk_send_h, settlezt,
 								gbdate,zbqztype,HgtsPubConst.TRANSPORT_QY, map_dates);

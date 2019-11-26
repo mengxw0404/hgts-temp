@@ -12,7 +12,6 @@ import nc.ui.pub.bill.BillCardPanel;
 import nc.ui.pub.bill.BillListPanel;
 import nc.ui.pub.print.IMetaDataDataSource;
 import nc.ui.pubapp.uif2app.actions.BaseMetaDataBasedPrintAction;
-import nc.ui.pubapp.uif2app.query2.action.DefaultRefreshAction;
 import nc.ui.pubapp.uif2app.view.BillForm;
 import nc.ui.pubapp.uif2app.view.BillListView;
 import nc.ui.pubapp.uif2app.view.ShowUpableBillForm;
@@ -22,8 +21,6 @@ import nc.vo.hgts.pub.HgtsPubTool;
 import nc.vo.hgts.sendcarlist.AggSendCarListHVO;
 import nc.vo.hgts.sendcarlist.SendCarListBVO;
 import nc.vo.pub.BusinessException;
-import nc.vo.pub.IVOMeta;
-import nc.vo.pubapp.pattern.model.tool.BillIndex;
 import nc.vo.trade.checkrule.VOChecker;
 import nc.vo.uif2.LoginContext;
 
@@ -107,7 +104,6 @@ public class DatePrintAction extends BaseMetaDataBasedPrintAction {
 		if (this.getPrintEntry().selectTemplate() != 1) {
 			return;
 		}
-		
 		this.getSelectIndex();
 		AggSendCarListHVO newObj = null;
 		if (null == selectIndex || selectIndex.length == 0) {
@@ -191,8 +187,6 @@ public class DatePrintAction extends BaseMetaDataBasedPrintAction {
 				return null;
 			}
 			AggSendCarListHVO vo = (AggSendCarListHVO) oldVO.clone();
-			//		BillIndex index = new BillIndex(new AggSendCarListHVO[] { vo });
-			//		IVOMeta meta = oldVO.getMetaData().getVOMeta(SendCarListBVO.class);
 			SendCarListBVO[] itemVOs = new SendCarListBVO[this.selectIndex.length];
 			for (int i = 0; i < this.selectIndex.length; ++i) {
 				String pk_sendcarlist_b = "";

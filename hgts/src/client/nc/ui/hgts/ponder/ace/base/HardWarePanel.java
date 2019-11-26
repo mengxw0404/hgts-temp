@@ -49,34 +49,21 @@ public class HardWarePanel extends UIPanel{
 			Logger.error(e);
 			MessageDialog.showErrorDlg(this, "", e.getMessage());
 		}
-		if ("Y".equals(vedioparam)) {
-			SwingUtilities.invokeLater(new Runnable()
-			{
-				public void run()
-				{
-					HardWarePanel.this.XYGVideoPanel = new XYGVideoPanel();
-					HardWarePanel.this.add(HardWarePanel.this.getXYGVideoPanel());
-					HardWarePanel.this.getXYGVideoPanel().loadVideo();
-					HardWarePanel.this.getXYGVideoPanel().playVideo();
-				}
-			});
-		} else {
-			add(getVedioPanel());
-		}
-		/*if (("Y".equals(getParents().getBillWorkPanel().getMeasDoc().getDef2())) && (YGUtils.isXiaoyugou())) {
-      SwingUtilities.invokeLater(new Runnable()
-      {
-        public void run()
-        {
-          HardWarePanel.this.XYGVideoPanel = new XYGVideoPanel();
-          HardWarePanel.this.add(HardWarePanel.this.getXYGVideoPanel());
-          HardWarePanel.this.getXYGVideoPanel().loadVideo();
-          HardWarePanel.this.getXYGVideoPanel().playVideo();
-        }
-      });
-    } else {
-      add(getVedioPanel());
-    }*/
+//		if ("Y".equals(vedioparam)) {
+//			SwingUtilities.invokeLater(new Runnable()
+//			{
+//				public void run()
+//				{
+//					HardWarePanel.this.XYGVideoPanel = new XYGVideoPanel();
+//					HardWarePanel.this.add(HardWarePanel.this.getXYGVideoPanel());
+//					HardWarePanel.this.getXYGVideoPanel().loadVideo();
+//					HardWarePanel.this.getXYGVideoPanel().playVideo();
+//				}
+//			});
+//		} else {
+//			add(getVedioPanel());
+//		}
+	
 	}
 
 	protected MeasPanel getMeasPanel()

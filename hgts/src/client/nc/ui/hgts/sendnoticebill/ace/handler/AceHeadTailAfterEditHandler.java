@@ -88,7 +88,7 @@ public class AceHeadTailAfterEditHandler implements IAppEventHandler<CardHeadTai
 
 									}else{
 										// 2、客户分类价格
-										String strWhere=" and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pk_cust+"')";
+										String strWhere="and nvl(def1,'~')!='~'  and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pk_cust+"')";
 										String ssql=coditions+strWhere+orderfiled;
 										list=(List<PricepolicyBVO>) bs.executeQuery(ssql, new BeanListProcessor(PricepolicyBVO.class));
 										if(null !=list && list.size()>0){
@@ -97,6 +97,7 @@ public class AceHeadTailAfterEditHandler implements IAppEventHandler<CardHeadTai
 										}else{
 											//20191112-价格政策公共价格属性注释
 											MessageDialog.showHintDlg(null, "提示", "未定义对应的价格政策");
+											return;
 //											// 3、公共价格:客户分类为空的
 //											String s_sql=coditions+" and pk_cust='~' and (def1 is null or def1='~') "+orderfiled;
 //											list=(List<PricepolicyBVO>) bs.executeQuery(s_sql, new BeanListProcessor(PricepolicyBVO.class));

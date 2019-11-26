@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import nc.bs.logging.Logger;
 import nc.ui.hgts.pondUI.ace.Hardware.InfraredPortUtil;
-import nc.vo.hgts.bd.cal.CalParaVO;
 import nc.vo.pub.BusinessException;
 
 public class CodeStack implements Observer
@@ -58,44 +57,69 @@ public class CodeStack implements Observer
       }
   }
 
-  
+
   public InfraredPortUtil getIrDAreader()
   {
     return this.IrDAreader;
   }
 
+  //红外状态变更模板显示
 @Override
 public void update(Observable o, Object obj) {
 	
 	if(obj instanceof String){
-		
-		if(obj.toString().trim().equals("00aa")){
-			//双通
-			this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
-			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
-			this.parents.measdoc.setAttributeValue("isvia", "Y");
-		}else if(obj.toString().trim().equals("0355")){
-			//双断
-			this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
-			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
-			this.parents.measdoc.setAttributeValue("isvia", "N");
-		}else if(obj.toString().trim().equals("0155")){
-			//一断
-			this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
-			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
-			this.parents.measdoc.setAttributeValue("isvia", "N");
-		}else if(obj.toString().trim().equals("0255")){
-			//二断
-			this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
-			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
-			this.parents.measdoc.setAttributeValue("isvia", "N");
-		}else{
-			this.parents.getStatusDesginPanel().OneInfraredShow.setText("未知");
-			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("未知");
-			this.parents.measdoc.setAttributeValue("isvia", "N");
-		}
+		if(obj.toString().trim().equals("03E1") ||obj.toString().trim().equals("0FE1") ){
+		//双通//从站返回：01 02 01 03 E1 89（DI0、DI1 闭合，其余都断开）
+			  //从站返回：01 02 01 0F E1 8C（四路全闭合
+		this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
+		this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
+		this.parents.measdoc.setAttributeValue("isvia", "Y");
+	}else if(obj.toString().trim().equals("00A1")){
+		//双断 从站返回：01 02 01 00 A1 88（四路全断开）
+		this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
+		this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
+		this.parents.measdoc.setAttributeValue("isvia", "N");
+	}else if(obj.toString().trim().equals("0220")){
+		//一断//从站返回：01 02 01 02 20 49（DI1 闭合，其余都断开）
+		this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
+		this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
+		this.parents.measdoc.setAttributeValue("isvia", "N");
+	}else if(obj.toString().trim().equals("0160")){
+		//二断//从站返回：01 02 01 01 60 48（DI0 闭合，其余都断开）
+		this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
+		this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
+		this.parents.measdoc.setAttributeValue("isvia", "N");
+	}else{
+		this.parents.getStatusDesginPanel().OneInfraredShow.setText("未知");
+		this.parents.getStatusDesginPanel().TwoInfraredShow.setText("未知");
+		this.parents.measdoc.setAttributeValue("isvia", "N");
+	}
+//		if(obj.toString().trim().equals("00aa")){
+//			//双通
+//			this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
+//			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
+//			this.parents.measdoc.setAttributeValue("isvia", "Y");
+//		}else if(obj.toString().trim().equals("0355")){
+//			//双断
+//			this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
+//			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
+//			this.parents.measdoc.setAttributeValue("isvia", "N");
+//		}else if(obj.toString().trim().equals("0155")){
+//			//一断
+//			this.parents.getStatusDesginPanel().OneInfraredShow.setText("断");
+//			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("通");
+//			this.parents.measdoc.setAttributeValue("isvia", "N");
+//		}else if(obj.toString().trim().equals("0255")){
+//			//二断
+//			this.parents.getStatusDesginPanel().OneInfraredShow.setText("通");
+//			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("断");
+//			this.parents.measdoc.setAttributeValue("isvia", "N");
+//		}else{
+//			this.parents.getStatusDesginPanel().OneInfraredShow.setText("未知");
+//			this.parents.getStatusDesginPanel().TwoInfraredShow.setText("未知");
+//			this.parents.measdoc.setAttributeValue("isvia", "N");
+//		}
 		
 	}
 }
-
 }

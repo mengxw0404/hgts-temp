@@ -208,19 +208,4 @@ public class InfraredPortUtil extends Observable
     }
 
   }
-
-  /* //十进制改十六进制
-  public static String BinaryToHexString(byte[] bytes)
-  {
-    String result = "";
-    String hex = "";
-    for (int i = 0; i < bytes.length; i++)
-    {
-      hex = String.valueOf(hexStr.charAt((bytes[i] & 0xF0) >> 4));
-      
-      hex = hex + String.valueOf(hexStr.charAt(bytes[i] & 0xF));
-      result = result + hex;
-    }
-    return result;
-  }*/
 }

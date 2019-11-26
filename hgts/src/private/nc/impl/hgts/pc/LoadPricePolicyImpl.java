@@ -9,6 +9,7 @@ import java.util.Map;
 import nc.bs.trade.business.HYSuperDMO;
 import nc.itf.hgts.pc.ILoadPricePolicy;
 import nc.itf.hgts.pc.IPricePolicyVO;
+import nc.ui.pub.beans.MessageDialog;
 import nc.vo.hgts.pc.PricePolicyPKVO;
 import nc.vo.hgts.pricepolicy.PricepolicyBVO;
 import nc.vo.hgts.pub.HgtsPubConst;
@@ -60,7 +61,7 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 			}
 		}else{
 			// 2、客户分类价格
-			String strWhere=" and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
+			String strWhere=" and nvl(def1,'~')!='~'  and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
 			String ssql=coditions+strWhere+orderfiled;
 			bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, ssql);
 			if(null !=bvos && bvos.length>0){			
@@ -76,11 +77,10 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 					}		
 				}
 			}
-/*			//20191112-价格政策公共价格属性注释
+			//20191112-价格政策公共价格属性注释
  			// 3、公共价格
 			else{
-				
-				String s_sql=coditions+" and pk_cust='~' and (def1 is null or def1='~')"+orderfiled;
+				/*String s_sql=coditions+" and pk_cust='~' and (def1 is null or def1='~')"+orderfiled;
 				bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, s_sql);
 				if(null !=bvos && bvos.length>0){			
 					for(int i=0;i<bvos.length;i++){
@@ -94,8 +94,8 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 							map.put(jgys, list);
 						}		
 					}
-				}
-			}*/
+				}*/
+			}
 		}
 		return map;
 	}
@@ -130,7 +130,7 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 		PricepolicyBVO[] bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, sql);
 		if(null==bvos || bvos.length==0){
 			// 2、客户分类价格
-			String strWhere=" and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
+			String strWhere=" and nvl(def1,'~')!='~'  and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
 			String ssql=codi+strWhere+orderfiled;
 			bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, ssql);
 			//20191112-价格政策公共价格属性注释
@@ -172,7 +172,7 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 		PricepolicyBVO[] bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, sql);
 		if(null==bvos || bvos.length==0){
 			// 2、客户分类价格
-			String strWhere=" and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
+			String strWhere=" and nvl(def1,'~')!='~'  and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
 			String ssql=codi+strWhere+orderfiled;
 			bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, ssql);
 			////20191112-价格政策公共价格属性注释
@@ -213,7 +213,7 @@ public class LoadPricePolicyImpl implements ILoadPricePolicy {
 		PricepolicyBVO[] bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, sql);
 		if(null==bvos || bvos.length==0){
 			// 2、客户分类价格
-			String strWhere=" and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
+			String strWhere=" and nvl(def1,'~')!='~'  and def1=(select ecotypesincevfive from bd_customer where nvl(dr,0)=0 and pk_customer='"+pricePk.getPk_cust()+"')";
 			String ssql=codi+strWhere+orderfiled;
 			bvos=(PricepolicyBVO[]) dmo.queryByWhereClause(PricepolicyBVO.class, ssql);
 			//20191112-价格政策公共价格属性注释

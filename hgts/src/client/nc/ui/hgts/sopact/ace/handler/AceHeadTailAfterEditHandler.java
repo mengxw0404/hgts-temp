@@ -31,8 +31,7 @@ public class AceHeadTailAfterEditHandler implements IAppEventHandler<CardHeadTai
 		String pk_cust=HgtsPubTool.getStringNullAsTrim(panel.getHeadItem("cust").getValueObject());
 		String pk_busitype=HgtsPubTool.getStringNullAsTrim(panel.getHeadItem("pk_busitype").getValueObject());
 		String pk_balatype=HgtsPubTool.getStringNullAsTrim(panel.getHeadItem("pk_balatype").getValueObject());
-	
-		
+
 		if(!"".equals(pk_cust)  && !"".equals(pk_busitype)  && !"".equals(pk_balatype)){
 			int rowcount=panel.getBillModel("pk_pact_b").getRowCount();
 			if(rowcount>0){
