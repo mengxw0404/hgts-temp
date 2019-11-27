@@ -126,6 +126,7 @@ public class SendnoticebillSaveAction extends SaveScriptAction {
 			super.doAction(e);
 			return;
 		}else{
+			// ¼ìÑéÓà¶îÊÇ·ñ×ã¹»
 			Object[] value = checkBalanceInfo(originBills[0]);
 			if (null != value && value.length > 0) {
 				String param = HgtsPubTool.getStringNullAsTrim(value[0]);

@@ -359,11 +359,13 @@
 		<property name="context"><ref bean="context"/></property>
 	</bean>
 
+	<bean id="qryDLGInitializer" class="nc.ui.hgts.pub.action.QueryDLGInitalizer"></bean>
 	<!--======= ¶¯×÷£º[newActions] [²éÑ¯] ===========-->
 	<bean id="defaultQueryAction" class="nc.ui.pubapp.uif2app.query2.action.DefaultQueryAction">
 		<property name="model"><ref bean="bmModel"/></property>
 		<property name="templateContainer"><ref bean="defaultQueryActionQueryTemplateContainer" /></property>
 		<property name="nodeKey" value="qt"></property>
+		<property name="qryCondDLGInitializer"><ref bean="qryDLGInitializer" /></property>
 		<property name="dataManager"><ref bean="bmModelModelDataManager"/></property>
 		<property name="exceptionHandler"><ref bean="exceptionHandler" /></property>
 	</bean>

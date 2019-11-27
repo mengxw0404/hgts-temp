@@ -789,6 +789,17 @@ public class Sendcarlist_config extends AbstractJavaBeanDefinition {
 		return bean;
 	}
 
+	public nc.ui.hgts.pub.action.QueryDLGInitalizer getQryDLGInitializer() {
+		if (context.get("qryDLGInitializer") != null)
+			return (nc.ui.hgts.pub.action.QueryDLGInitalizer) context
+					.get("qryDLGInitializer");
+		nc.ui.hgts.pub.action.QueryDLGInitalizer bean = new nc.ui.hgts.pub.action.QueryDLGInitalizer();
+		context.put("qryDLGInitializer", bean);
+		setBeanFacotryIfBeanFacatoryAware(bean);
+		invokeInitializingBean(bean);
+		return bean;
+	}
+
 	public nc.ui.pubapp.uif2app.query2.action.DefaultQueryAction getDefaultQueryAction() {
 		if (context.get("defaultQueryAction") != null)
 			return (nc.ui.pubapp.uif2app.query2.action.DefaultQueryAction) context
@@ -798,6 +809,7 @@ public class Sendcarlist_config extends AbstractJavaBeanDefinition {
 		bean.setModel(getBmModel());
 		bean.setTemplateContainer(getDefaultQueryActionQueryTemplateContainer());
 		bean.setNodeKey("qt");
+		bean.setQryCondDLGInitializer(getQryDLGInitializer());
 		bean.setDataManager(getBmModelModelDataManager());
 		bean.setExceptionHandler(getExceptionHandler());
 		setBeanFacotryIfBeanFacatoryAware(bean);

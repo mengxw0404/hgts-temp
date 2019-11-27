@@ -176,7 +176,7 @@
 				<ref bean="separatorAction" />
 				<ref bean="auditMenuAction" />
 				<ref bean="separatorAction" />
-					<!--  <ref bean="linkQueryAction" />
+				<!--  <ref bean="linkQueryAction" />
 				<ref bean="separatorAction" />-->
 				
 				<ref bean="printMenuAction" />
@@ -186,14 +186,14 @@
 				<ref bean="separatorAction" /> 
 				<ref bean="rowGroupsAction" />
 				<ref bean="separatorAction" />
-				<ref bean="qryPriceAction"/>
+				<!-- <ref bean="qryPriceAction"/>取价
 				<ref bean="separatorAction" />
-				<ref bean="zdGroupsAction" />
-				<ref bean="separatorAction" />
-				<ref bean="jzGroupsAction" />
-				<ref bean="rqTzAction" />
-				<ref bean="affContractsAction"/>
-				<ref bean="splitBillAction" />
+				<ref bean="zdGroupsAction" />折吨
+				<ref bean="separatorAction" /> -->
+				<ref bean="jzGroupsAction" /><!--结转  -->
+				<ref bean="rqTzAction" /><!-- 日期调整 -->
+				<!--<ref bean="affContractsAction"/>
+				<ref bean="splitBillAction" /> 拆单 -->
 			    <ref bean="separatorAction" />
 				<ref bean="ConOfPriceAction" />
 			</list>
@@ -414,11 +414,13 @@
 		<property name="context"><ref bean="context"/></property>
 	</bean>
 
+	<bean id="qryDLGInitializer" class="nc.ui.hgts.pub.action.QueryDLGInitalizer"></bean>
 	<!--======= 动作：[newActions] [查询] ===========-->
 	<bean id="defaultQueryAction" class="nc.ui.pubapp.uif2app.query2.action.DefaultQueryAction">
 		<property name="model"><ref bean="bmModel"/></property>
 		<property name="templateContainer"><ref bean="defaultQueryActionQueryTemplateContainer" /></property>
 		<property name="nodeKey" value="qt"></property>
+		<property name="qryCondDLGInitializer"><ref bean="qryDLGInitializer" /></property>
 		<property name="dataManager"><ref bean="bmModelModelDataManager"/></property>
 		<property name="exceptionHandler"><ref bean="exceptionHandler" /></property>
 	</bean>

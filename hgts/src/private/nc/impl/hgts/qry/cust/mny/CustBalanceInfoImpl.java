@@ -29,7 +29,7 @@ public class CustBalanceInfoImpl implements ICustBalanceInfo {
 	private ColumnProcessor cp = new ColumnProcessor();
 
 	/**
-	 * 2019年4月19日 去掉部门条件
+	 *
 	 */
 	@Override
 	public UFDouble[] getBalanceInfo(String hpk, String pk_billtype,
@@ -72,7 +72,7 @@ public class CustBalanceInfoImpl implements ICustBalanceInfo {
 		info[0]=credit;
 		info[1]=skmny.sub(fpmny);
 		info[2]=sendmny.add(sendmny_ly).add(sendmny_close).add(sendmny_close_ly);
-		info[3]=balance;
+		info[3]=balance;//// 可用额度
 		info[4]=skmny_all.sub(fpmny_all); // 总余额
 
 		return info;
@@ -105,7 +105,7 @@ public class CustBalanceInfoImpl implements ICustBalanceInfo {
 
 	/**
 	 * 收款金额
-	 * 2019年4月19日 去掉部门条件
+	 * 
 	 * @param pk_org
 	 * @param pk_cust
 	 * @param pk_balatype
@@ -121,7 +121,7 @@ public class CustBalanceInfoImpl implements ICustBalanceInfo {
 				+ " and customer = '"+pk_cust+"' "
 			//	+ " and checktype = 1 "//金额校验
 				+( null==pk_balatype || "".equals(pk_balatype)?"": " and pk_balatype = '"+pk_balatype+"' ")
-				//+ " and pk_dept ='"+pk_deptdoc+"'"
+				+ " and pk_dept ='"+pk_deptdoc+"'"
 				+ " and substr(dbilldate,0,10) >='"+dbilldate+"'";
 
 		UFDouble sk = HgtsPubTool.getUFDoubleNullAsZero(getQuery().executeQuery(sql, cp));
@@ -197,7 +197,7 @@ public class CustBalanceInfoImpl implements ICustBalanceInfo {
 					+ " where nvl(b.dr,0) = 0 and nvl(h.dr,0) = 0 "
 					+ " and COALESCE(b.rowcloseflag,'N')='"+closeflag+"' "
 					+ " and h.pk_cust='"+pk_cust+"' "
-				//	+ " and h.pk_dept='"+pk_deptdoc+"'"
+					+ " and h.pk_dept='"+pk_deptdoc+"'"
 					+ (null==pk_balatype||"".equals(pk_balatype)?"": " and h.pk_balatype='"+pk_balatype+"'")
 					+ " and h.pk_transporttype='"+pk_transporttype+"'"
 					+ " and substr(h.dbilldate,0,10) >='"+dbilldate+"'"

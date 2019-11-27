@@ -7,7 +7,7 @@ import nc.bs.framework.common.InvocationInfoProxy;
 import nc.bs.pub.pa.PreAlertObject;
 import nc.bs.pub.taskcenter.BgWorkingContext;
 import nc.bs.pub.taskcenter.IBackgroundWorkPlugin;
-import nc.ui.trade.business.HYPubBO_Client;
+import nc.bs.trade.business.HYPubBO;
 import nc.vo.hgts.pricepolicy.PricepolicyBVO;
 import nc.vo.hgts.pricepolicy.PricepolicyHVO;
 import nc.vo.hgts.pub.HgtsPubTool;
@@ -29,8 +29,8 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 			throws BusinessException {
 		  String curDate=AppContext.getInstance().getServerTime().toStdString().substring(0, 10);
 		  String wheresql = " vbillstatus=1 and closeflag!='Y' and substr(zxtime,0,10) = '"+curDate+"'";
-		  PricepolicyHVO[] Pricevos=(PricepolicyHVO[]) HYPubBO_Client.queryByCondition(PricepolicyHVO.class,wheresql);
-		  
+		  PricepolicyHVO[] Pricevos=(PricepolicyHVO[]) new HYPubBO().queryByCondition(PricepolicyHVO.class,wheresql);
+		  //价格政策
 		  for( PricepolicyHVO pricevo: Pricevos){
 			// 客户
 				String pk_cust=HgtsPubTool.getStringNullAsTrim(pricevo.getAttributeValue("pk_cust"));
@@ -39,10 +39,7 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 				// 执行时间
 				String zxtime=HgtsPubTool.getStringNullAsTrim(pricevo.getAttributeValue("zxtime")).substring(0, 10);
 			
-//				if(zxtime.compareTo(curDate)>=1){
-//					throw new BusinessException("当前日期未到此价格政策的执行日期，不允许此操作！");
-//				}
-				PricepolicyBVO[] pbvos=(PricepolicyBVO[]) HYPubBO_Client.queryByCondition(PricepolicyBVO.class, "nvl(dr,0)=0 and PK_PRICEPOLICY ='"+pricevo.getPrimaryKey()+"'");
+				PricepolicyBVO[] pbvos=(PricepolicyBVO[]) new HYPubBO().queryByCondition(PricepolicyBVO.class, "nvl(dr,0)=0 and PK_PRICEPOLICY ='"+pricevo.getPrimaryKey()+"'");
 				List<String[]> list=this.getQryInfo(pbvos);
 
 				String vnote="";
@@ -72,7 +69,7 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 							}
 						}
 
-						SendnoticebillHVO[] hvos=(SendnoticebillHVO[]) HYPubBO_Client.queryByCondition(SendnoticebillHVO.class,wherepart);
+						SendnoticebillHVO[] hvos=(SendnoticebillHVO[]) new HYPubBO().queryByCondition(SendnoticebillHVO.class,wherepart);
 						if(null !=hvos && hvos.length>0){
 							String wherepart_b=" nvl(dr,0)=0 and nvl(rowcloseflag,'N')='N' ";
 
@@ -83,7 +80,7 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 
 								wherepart_b=wherepart_b+" and pk_sendnoticebill='"+hpk+"' and pz='"+pk_pz+"'";
 
-								SendnoticebillBVO[] bvos=(SendnoticebillBVO[]) HYPubBO_Client.queryByCondition(SendnoticebillBVO.class, wherepart_b);
+								SendnoticebillBVO[] bvos=(SendnoticebillBVO[]) new HYPubBO().queryByCondition(SendnoticebillBVO.class, wherepart_b);
 								if(null !=bvos && bvos.length>0){
 									Boolean isClose=false;
 									for(int k=0;k<bvos.length;k++){
@@ -109,8 +106,8 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 
 									if(isClose){
 
-										HYPubBO_Client.updateAry(bvos);
-										HYPubBO_Client.update(hvo);
+										new HYPubBO().updateAry(bvos);
+										new HYPubBO().update(hvo);
 
 										if(null !=vnote && !"".equals(vnote)){								
 											if(!vnote.contains(vbillno)){													
@@ -132,7 +129,7 @@ public class PricePolicyCloseSendBillPlusgin implements IBackgroundWorkPlugin {
 						pricevo.setAttributeValue("vnote", vnote);
 						pricevo.setAttributeValue("dr", 0);
 						pricevo.setAttributeValue("def6", 1); // 记录已经执行该按钮操作
-						HYPubBO_Client.update(pricevo);
+						new HYPubBO().update(pricevo);
 					}
 				}
 		  }

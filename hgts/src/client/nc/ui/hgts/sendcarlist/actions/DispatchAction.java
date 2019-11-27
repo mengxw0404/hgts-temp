@@ -60,6 +60,7 @@ public class DispatchAction extends EditAction{
 				listbvos.add(bodyvo);
 			}	
 		}
+		System.out.println("2323");
 		//判断是否存在为派车数
 		if(listbvos.size() > 0){
 			newObj.setChildrenVO(listbvos.toArray(new SendCarListBVO[0]));
